@@ -2,22 +2,22 @@ from flask import Flask
 from flask import request
 from flask import make_response
 from flask import jsonify
+from flask import render_template
 from BeginSpider import bilibiliCid
 
 app = Flask(__name__)
-print(Flask)
 
 @app.route('/')
 def index():
-    return '<h1>hello world</h1>'
+    return render_template('index.html', title="index")
 
-@app.route('/getBilibiliCid', methods=['GET'])
+@app.route('/getBilibiliCid', methods=['POST'])
 def get_bilibili_cid():
-    if request.method == 'GET':
-        print(bilibiliCid.get_bilibili_cid('78'))
+    if request.method == 'POST':
+        aid = request.form.get('aid')
         responseText = {
             'code': 200,
-            'lists':bilibiliCid.get_bilibili_cid('78')
+            'lists': bilibiliCid.get_bilibili_cid(aid)
         }
         return make_response(jsonify(responseText))
 
